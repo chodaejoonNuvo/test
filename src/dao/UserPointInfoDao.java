@@ -49,7 +49,7 @@ public class UserPointInfoDao extends DBAccess {
 		    	
 		    	Timestamp levelInfoUpdateDate = new Timestamp(sdf.parse(recode[5]).getTime());
 		    	Timestamp now = new Timestamp(sdf.parse(levelInfoUpdateDateStr).getTime());
-		    	if (now.compareTo(levelInfoUpdateDate) < 0) {
+		    	if (now.compareTo(levelInfoUpdateDate) > 0) {
 		    		UserPointDto userPointDto = new UserPointDto();
 			    	userPointDto.setUserID(recode[0]);
 			    	userPointDto.setUserNM(recode[1]);

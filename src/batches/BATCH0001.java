@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import common.Connection;
-import common.MessageID;
 import dao.LevelInfoDao;
 import dao.UserPointInfoDao;
 import dto.LevelInfoDto;
