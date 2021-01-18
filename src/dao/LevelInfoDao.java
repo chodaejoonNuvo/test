@@ -28,7 +28,7 @@ public class LevelInfoDao extends DBAccess {
 	
 	/**
 	 * ユーザポイント情報取得
-	 * 
+	 * @param levelInfoDto ユーザポイント更新情報
 	 * @return ユーザポイント情報リスト
 	 * @throws ApplicationException 
 	 * ①ファイル読み込みに失敗した場合
@@ -38,9 +38,12 @@ public class LevelInfoDao extends DBAccess {
 		// 戻り値
 		int updateCnt = 0;
 		Path path = Paths.get(FILE_FULLPATH);
-		SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDDHHMMSS);
+		SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDD);
 		try {
-			List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+			List<String> lines = getFileInfo();
+			if (null == lines) {
+				lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+			}
 		    for (int i = 0; i < lines.size(); i++) {
 		    	String line = lines.get(i);
 		    	String[] recode = line.split(Const.COMMA);
@@ -50,7 +53,9 @@ public class LevelInfoDao extends DBAccess {
 		    		line = recode[0] + Const.COMMA + recode[1] + Const.COMMA + recode[2];
 		    		updateCnt = updateCnt + 1;
 		    	}
-		    	line = line + Const.RFLF;
+		    	if(!line.contains(Const.RFLF)) {
+		    		line = line + Const.RFLF;		    		
+		    	}
 		    	lines.set(i, line);
 		    }
 		    if (updateCnt > 0) {

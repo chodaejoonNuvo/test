@@ -35,4 +35,12 @@ public class DBAccess extends Connection {
 		files.put(this.tableNM, lines);
 		this.con.setFiles(files);
 	}
+	
+	protected List<String> getFileInfo() {
+		Map<String, List<String>> files = this.con.getFiles();
+		if (null == files) {
+			files = new HashMap<>();
+		}
+		return files.get(this.tableNM);
+	}
 }

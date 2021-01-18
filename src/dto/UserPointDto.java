@@ -28,6 +28,11 @@ public class UserPointDto {
 	 * 更新日時(ポイント情報)
 	 */
 	private Timestamp pointInfoUpdateDate;
+	
+	/**
+	 * 更新日時(レベル情報)
+	 */
+	private Timestamp levelInfoUpdateDate;
 
 	
 	public String getUserID() {
@@ -70,9 +75,18 @@ public class UserPointDto {
 		this.pointInfoUpdateDate = pointInfoUpdateDate;
 	}
 
+	public Timestamp getLevelInfoUpdateDate() {
+		return levelInfoUpdateDate;
+	}
+
+	public void setLevelInfoUpdateDate(Timestamp levelInfoUpdateDate) {
+		this.levelInfoUpdateDate = levelInfoUpdateDate;
+	}
+
 	@Override
 	public String toString() {
 		return "UserPointDto [userID=" + userID + ", userNM=" + userNM + ", point=" + point + ", userInfoUpdateDate="
-				+ userInfoUpdateDate + ", pointInfoUpdateDate=" + pointInfoUpdateDate + "]";
+				+ userInfoUpdateDate + ", pointInfoUpdateDate=" + pointInfoUpdateDate + ", levelInfoUpdateDate="
+				+ levelInfoUpdateDate + "]";
 	}
 }

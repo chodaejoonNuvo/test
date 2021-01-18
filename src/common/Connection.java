@@ -3,11 +3,16 @@ package common;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Connection {
 
+	public Connection() {
+		this.files = new HashMap<>();
+	}
+	
 	private Map<String, List<String>> files;
 
 	public Map<String, List<String>> getFiles() {
@@ -37,6 +42,6 @@ public class Connection {
 	}
 	
 	public void rollback() {
-		
+		setFiles(null);
 	}
 }
