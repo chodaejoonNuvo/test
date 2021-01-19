@@ -1,11 +1,13 @@
 package batches;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import common.Connection;
+import common.Const;
 import common.MessageID;
 import dao.LevelInfoDao;
 import dao.UserPointInfoDao;
@@ -21,14 +23,10 @@ public class BATCH0001 {
 		Connection con = new Connection();
 		List<UserPointDto> userPointDtoList = new ArrayList<>();
 		try {
-			
+			SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDDHH24MMSS);
+			Timestamp updateDate = new Timestamp(sdf.parse(args[0]).getTime());
 			UserPointInfoDao userPointInfoDao = new UserPointInfoDao(con);
-			userPointDtoList = userPointInfoDao.getUserPointInfoList(args[0]);
-		} catch (ApplicationException e) {
-			throw e;
-		}
-		try {
-			Timestamp updateDate = new Timestamp((new Date().getTime()));
+			userPointDtoList = userPointInfoDao.getUserPointInfoList(updateDate);
 			for (int i = 0; i < userPointDtoList.size(); i++) {
 				LevelInfoDao levelInfoDao = new LevelInfoDao(con);
 				int j = 0;
@@ -44,7 +42,6 @@ public class BATCH0001 {
 						levelInfoDto.setLevel(2);	
 					} else if (userPointDto.getPoint() >= 500) {
 						levelInfoDto.setLevel(1);
-						
 					} else if (userPointDto.getPoint() < 500) {
 						levelInfoDto.setLevel(0);
 					} else {
@@ -61,6 +58,9 @@ public class BATCH0001 {
 		} catch (CheckException e) {
 			con.rollback();
 			throw e;
+		} catch (ParseException e) {
+			con.rollback();
+			throw new ApplicationException(MessageID.DATE_FORMAT_ERROR);
 		} finally {
 			con.disconnect();
 		}
