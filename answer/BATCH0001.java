@@ -6,15 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 import common.Connection;
+import common.MessageID;
 import dao.LevelInfoDao;
 import dao.UserPointInfoDao;
 import dto.LevelInfoDto;
 import dto.UserPointDto;
 import exception.ApplicationException;
+import exception.CheckException;
 
 public class BATCH0001 {
 
-	public static void main(String[] args) throws ApplicationException {
+	public static void main(String[] args) throws ApplicationException, CheckException {
 
 		Connection con = new Connection();
 		List<UserPointDto> userPointDtoList = new ArrayList<>();
@@ -35,22 +37,32 @@ public class BATCH0001 {
 						break;
 					}
 					UserPointDto userPointDto = userPointDtoList.get(j);
-					if (userPointDto.getPoint() >= 500) {
-						LevelInfoDto levelInfoDto = new LevelInfoDto();
-						levelInfoDto.setUserID(userPointDto.getUserID());
-						levelInfoDto.setUpdateDate(updateDate);
+					LevelInfoDto levelInfoDto = new LevelInfoDto();
+					levelInfoDto.setUserID(userPointDto.getUserID());
+					levelInfoDto.setUpdateDate(updateDate);
+					if (userPointDto.getPoint() >= 2000) {
+						levelInfoDto.setLevel(2);	
+					} else if (userPointDto.getPoint() >= 500) {
 						levelInfoDto.setLevel(1);
-						if (userPointDto.getPoint() >= 2000) {
-							levelInfoDto.setLevel(2);	
-						}
-						levelInfoDao.updateLevelInfo(levelInfoDto);
+						
+					} else if (userPointDto.getPoint() < 500) {
+						levelInfoDto.setLevel(0);
+					} else {
+						throw new CheckException(MessageID.INCORRECT_DATA_ERROR);
 					}
+					levelInfoDao.updateLevelInfo(levelInfoDto);
 				}
 				i = j - 1;
 				con.commit();
 			}
 		} catch (ApplicationException e) {
+			con.rollback();
 			throw e;
+		} catch (CheckException e) {
+			con.rollback();
+			throw e;
+		} finally {
+			con.disconnect();
 		}
 	}
 }
