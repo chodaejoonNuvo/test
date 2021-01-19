@@ -14,7 +14,7 @@ import exception.ApplicationException;
 
 public class BATCH0001 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ApplicationException {
 
 		Connection con = new Connection();
 		List<UserPointDto> userPointDtoList = new ArrayList<>();
@@ -22,8 +22,8 @@ public class BATCH0001 {
 			
 			UserPointInfoDao userPointInfoDao = new UserPointInfoDao(con);
 			userPointDtoList = userPointInfoDao.getUserPointInfoList(args[0]);
-		} catch (ApplicationException e1) {
-			e1.printStackTrace();
+		} catch (ApplicationException e) {
+			throw e;
 		}
 		try {
 			Timestamp updateDate = new Timestamp((new Date().getTime()));
@@ -50,7 +50,7 @@ public class BATCH0001 {
 				con.commit();
 			}
 		} catch (ApplicationException e) {
-			e.printStackTrace();
+			throw e;
 		}
 	}
 }
