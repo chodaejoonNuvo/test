@@ -38,7 +38,7 @@ public class LevelInfoDao extends DBAccess {
 		// 戻り値
 		int updateCnt = 0;
 		Path path = Paths.get(FILE_FULLPATH);
-		SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDD);
+		SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDDHH24MMSS);
 		try {
 			List<String> lines = getFileInfo();
 			if (null == lines) {

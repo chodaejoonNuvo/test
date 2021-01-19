@@ -44,4 +44,8 @@ public class Connection {
 	public void rollback() {
 		setFiles(null);
 	}
+	
+	public void disconnect() {
+		setFiles(null);
+	}
 }

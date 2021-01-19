@@ -31,25 +31,23 @@ public class UserPointInfoDao extends DBAccess {
 	
 	/**
 	 * ユーザポイント情報取得
-	 * @param レベル情報更新日時
+	 * @param standardDate 基準日
 	 * @return ユーザポイント情報リスト
 	 * @throws ApplicationException 
 	 * ①ファイル読み込みに失敗した場合
 	 * ②データの日付フォーマットがYYYYMMDDではない場合
 	 */
-	public List<UserPointDto> getUserPointInfoList(String levelInfoUpdateDateStr) throws ApplicationException {
+	public List<UserPointDto> getUserPointInfoList(Timestamp standardDate) throws ApplicationException {
 		// 戻り値
 		List<UserPointDto> userPointDtoList = new ArrayList<>();
 		Path path = Paths.get(FILE_FULLPATH);
-		SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDD);
+		SimpleDateFormat sdf  = new SimpleDateFormat(Const.DATE_FORMAT_YYYYMMDDHH24MMSS);
 		try {
 			List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 		    for (String line : lines) {
 		    	String[] recode = line.split(Const.COMMA);
-		    	
 		    	Timestamp levelInfoUpdateDate = new Timestamp(sdf.parse(recode[5]).getTime());
-		    	Timestamp now = new Timestamp(sdf.parse(levelInfoUpdateDateStr).getTime());
-		    	if (now.compareTo(levelInfoUpdateDate) > 0) {
+		    	if (standardDate.compareTo(levelInfoUpdateDate) > 0) {
 		    		UserPointDto userPointDto = new UserPointDto();
 			    	userPointDto.setUserID(recode[0]);
 			    	userPointDto.setUserNM(recode[1]);
