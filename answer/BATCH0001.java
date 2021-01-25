@@ -38,14 +38,14 @@ public class BATCH0001 {
 					LevelInfoDto levelInfoDto = new LevelInfoDto();
 					levelInfoDto.setUserID(userPointDto.getUserID());
 					levelInfoDto.setUpdateDate(updateDate);
-					if (userPointDto.getPoint() >= 2000) {
-						levelInfoDto.setLevel(2);	
+					if (userPointDto.getPoint() > 9999) {
+						throw new CheckException(MessageID.INCORRECT_DATA_ERROR);
+					} else if (userPointDto.getPoint() >= 2000) {
+						levelInfoDto.setLevel(2);
 					} else if (userPointDto.getPoint() >= 500) {
 						levelInfoDto.setLevel(1);
-					} else if (userPointDto.getPoint() < 500) {
-						levelInfoDto.setLevel(0);
 					} else {
-						throw new CheckException(MessageID.INCORRECT_DATA_ERROR);
+						levelInfoDto.setLevel(0);
 					}
 					levelInfoDao.updateLevelInfo(levelInfoDto);
 				}
