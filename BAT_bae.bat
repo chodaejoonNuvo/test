@@ -1,0 +1,1 @@
+start java -jar ./JAR_bae.jar 20210411121212
